@@ -1,0 +1,73 @@
+.card {
+  width: 250px;
+  padding: 0.5rem;
+  margin: 0.7rem;
+  border-radius: 3px;
+  cursor: pointer;
+  font-family: "Franklin Gothic Medium";
+  display: flex;
+  flex-direction: column;
+}
+
+.card--light {
+  background: rgb(241, 241, 241);
+  border: gray 1px solid;
+  transition: background 0.3s ease;
+  box-shadow: gray 2px 2px 5px;
+}
+
+.card--light:hover {
+  background: rgb(224, 224, 224);
+  transition: background 0.3s ease;
+  box-shadow: gray 1px 1px 4px;
+}
+
+.card--dark {
+  color: white;
+  background: rgb(37, 37, 37);
+  border: gray 1px solid;
+  transition: background 0.3s ease;
+  box-shadow: gray 2px 2px 5px;
+}
+
+.card--dark:hover {
+  background: rgb(66, 66, 66);
+  transition: background 0.3s ease;
+  box-shadow: gray 1px 1px 4px;
+}
+
+.card__header {
+  height: 20%;
+
+  text-align: center;
+}
+
+.card__header__id {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.card__header__name {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.card__body {
+  height: 80%;
+  display: flex;
+  align-items: center;
+
+  justify-content: center;
+}
+
+.card__body img {
+  max-height: 100%;
+  max-width: 100%;
+}
+
+.card__footer {
+  text-align: center;
+  height: 10%;
+  display: flex;
+  justify-content: center;
+}
