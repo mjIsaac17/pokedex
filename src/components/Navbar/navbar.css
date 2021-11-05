@@ -1,0 +1,19 @@
+@font-face {
+  font-family: "Press Start 2P";
+  src: url("../../fonts/PressStart2P-Regular.ttf") format("truetype");
+}
+nav {
+  background: red;
+  padding: 1rem 0;
+  width: 100%;
+  text-align: center;
+}
+
+.nav__title {
+  font-family: "Press Start 2P";
+  font-size: 2.5rem;
+  color: rgb(238, 216, 20);
+  text-shadow: -5px 0 rgb(45, 97, 165), 0 5px rgb(45, 97, 165),
+    5px 0 rgb(45, 97, 165), 0 -5px rgb(45, 97, 165);
+  letter-spacing: 5px;
+}
