@@ -7,10 +7,9 @@ export const PokemonListScreen = () => {
   const [pokemon, setPokemon] = useState(null);
 
   const totalPokemon = pokemon ? pokemon.length : 0;
-  const getPokemon = async () => {
-    const response = await fetch(
-      `https://pokeapi.co/api/v2/pokemon?offset=${totalPokemon}&limit=30`
-    );
+  //   const totalPokemon = useMemo(() => (pokemon ? pokemon.length : 0), [pokemon]);
+  const getPokemon = async (url) => {
+    const response = await fetch(url);
     if (response.ok) {
       const data = await response.json();
 
@@ -21,7 +20,9 @@ export const PokemonListScreen = () => {
       )
         .then((responses) =>
           Promise.all(responses.map((res) => res.json())).then((newPokemon) =>
-            setPokemon(pokemon ? [...pokemon, ...newPokemon] : newPokemon)
+            setPokemon((currentPokemon) =>
+              currentPokemon ? [...currentPokemon, ...newPokemon] : newPokemon
+            )
           )
         )
         .finally(() => setIsLoading(false));
@@ -30,7 +31,7 @@ export const PokemonListScreen = () => {
   };
 
   useEffect(() => {
-    getPokemon();
+    getPokemon("https://pokeapi.co/api/v2/pokemon?offset=0&limit=30");
   }, []);
 
   if (isLoading) return <h2>Loading...</h2>;
@@ -41,10 +42,16 @@ export const PokemonListScreen = () => {
           <InfiniteScroll
             className="flex-container"
             dataLength={totalPokemon}
-            next={getPokemon}
+            next={() =>
+              getPokemon(
+                `https://pokeapi.co/api/v2/pokemon?offset=${totalPokemon}&limit=30`
+              )
+            }
             hasMore
           >
             {pokemon.map((p) => (
+              // <div onclick={() => handleClick()}>
+              // </div >
               <Card key={p.id} pokemon={p} />
             ))}
           </InfiniteScroll>

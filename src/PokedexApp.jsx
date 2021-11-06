@@ -1,12 +1,10 @@
 import React from "react";
-import { Navbar } from "./components/Navbar/Navbar";
-import { PokemonListScreen } from "./components/PokemonListScreen";
+import { Layout } from "./components/Layout/Layout";
 
 export const PokedexApp = () => {
   return (
-    <div>
-      <Navbar />
-      <PokemonListScreen />
-    </div>
+    <>
+      <Layout />
+    </>
   );
 };

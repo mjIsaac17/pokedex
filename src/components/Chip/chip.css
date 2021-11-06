@@ -4,6 +4,8 @@
   padding: 0.5rem;
   margin: 0 0.3rem;
   border-radius: 15px;
+  max-width: 3rem;
+  justify-content: center;
 }
 
 .chip--grass {
@@ -26,7 +28,7 @@
 }
 
 .chip--water {
-  background: rgb(17, 141, 212);
+  background: rgb(0, 124, 195);
   color: white;
 }
 

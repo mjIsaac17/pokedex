@@ -1,0 +1,18 @@
+.details__box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.paper {
+  background: rgb(245, 244, 244);
+  border-radius: 15px;
+  box-shadow: 3px 3px 10px rgb(187, 187, 187);
+  box-sizing: border-box;
+  height: 90%;
+  padding: 2rem;
+  width: 90%;
+  max-width: 1500px;
+}

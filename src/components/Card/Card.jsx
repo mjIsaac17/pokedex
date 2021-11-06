@@ -1,10 +1,15 @@
 import React from "react";
+import { useHistory } from "react-router";
 import { Chip } from "../Chip/Chip";
 import "./card.css";
 
 export const Card = ({ pokemon }) => {
+  const history = useHistory();
+  const handleClick = () => {
+    history.push(`details/${pokemon.name}`, { pokemon: pokemon });
+  };
   return (
-    <div className="card card--light">
+    <div className="card card--light" onClick={handleClick}>
       <div className="card__header">
         <p className="card__header__id"> #{pokemon.id}</p>
         <p className="card__header__name">{pokemon.name}</p>
