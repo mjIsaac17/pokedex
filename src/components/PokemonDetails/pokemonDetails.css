@@ -1,3 +1,14 @@
+h1 {
+  font-size: 2.25rem;
+}
+h2 {
+  font-size: 1.75rem;
+}
+p,
+b {
+  font-size: 1.25rem;
+}
+
 .details__box {
   display: flex;
   align-items: center;
@@ -11,8 +22,122 @@
   border-radius: 15px;
   box-shadow: 3px 3px 10px rgb(187, 187, 187);
   box-sizing: border-box;
-  height: 90%;
+  font-family: "Franklin Gothic Medium";
+  height: 100%;
+  max-width: 750px;
+  max-height: 700px;
+  margin: auto;
   padding: 2rem;
   width: 90%;
-  max-width: 1500px;
+}
+
+.close {
+  cursor: pointer;
+  float: right;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: -0.5rem;
+}
+
+.close:hover,
+.close:focus {
+  color: rgb(134, 134, 134);
+}
+
+.grid-container {
+  overflow: auto;
+  display: grid;
+  width: 100%;
+  height: 100%;
+  gap: 1rem;
+  grid-template-columns: 1.25fr 1fr;
+  grid-template-rows: 0.5fr 0.5fr 2fr 1fr;
+  grid-template-areas:
+    "img stats"
+    "img body"
+    "types abilities"
+    "base-xp abilities";
+  grid-template-areas:
+    "img base-xp"
+    "img body"
+    "img stats"
+    "types abilities";
+}
+
+.img-area {
+  grid-area: img;
+}
+
+.img-area__title {
+  height: 15%;
+}
+
+.img-area img {
+  max-width: 95%;
+  height: 85%;
+}
+
+.stats {
+  grid-area: stats;
+}
+.stats p,
+.stats h2 {
+  margin-bottom: 0.5rem;
+}
+
+.types {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  grid-area: types;
+  /* background-color: grey; */
+}
+.types p {
+  font-size: 1rem;
+}
+.types h2 {
+  font-size: 1.5rem;
+}
+
+.body {
+  grid-area: body;
+  display: flex;
+  /* background-color: blue; */
+  /* align-items: center; */
+}
+
+.base-xp {
+  grid-area: base-xp;
+  display: flex;
+  align-items: center;
+  /* background-color: brown; */
+}
+
+.abilities {
+  grid-area: abilities;
+  /* display: grid; */
+  /* background-color: rgb(182, 72, 72); */
+}
+
+@media screen and (max-width: 600px) {
+  .grid-container {
+    grid-template-columns: 1fr;
+    grid-template-rows: 3fr 0.5fr 1.5fr 0.5fr 1.5fr 0.5fr;
+    grid-template-areas:
+      "img"
+      "types"
+      "stats"
+      "body"
+      "abilities"
+      "base-xp";
+  }
+  .paper {
+    max-height: 90%;
+    text-align: center;
+  }
+  .types,
+  .body,
+  .base-xp {
+    justify-content: center;
+  }
 }

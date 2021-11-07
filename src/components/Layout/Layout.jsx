@@ -13,12 +13,14 @@ import { PokemonListScreen } from "../PokemonListScreen";
 export const Layout = () => {
   return (
     <Router>
-      {/* <Navbar /> */}
-      <Switch>
-        <Route exact path="/details/:pokemon" component={PokemonDetails} />
-        <Route path="/pokemon" component={PokemonListScreen} />
-        <Redirect to="/pokemon" />
-      </Switch>
+      <Navbar />
+      <div style={{ height: "92%" }}>
+        <Switch>
+          <Route exact path="/details/:pokemon" component={PokemonDetails} />
+          <Route path="/pokemon" component={PokemonListScreen} />
+          <Redirect to="/pokemon" />
+        </Switch>
+      </div>
     </Router>
   );
 };

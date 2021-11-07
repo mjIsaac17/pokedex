@@ -3,7 +3,7 @@ import "./navbar.css";
 
 export const Navbar = () => {
   return (
-    <nav>
+    <nav className="sticky">
       <h1 className="nav__title">Pokedex</h1>
     </nav>
   );

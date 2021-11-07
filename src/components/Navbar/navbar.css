@@ -3,10 +3,17 @@
   src: url("../../fonts/PressStart2P-Regular.ttf") format("truetype");
 }
 nav {
+  align-items: center;
   background: red;
-  padding: 1rem 0;
+  display: flex;
+  height: 8%;
+  justify-content: center;
   width: 100%;
-  text-align: center;
+}
+
+.sticky {
+  position: sticky;
+  top: 0;
 }
 
 .nav__title {
