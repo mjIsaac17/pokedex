@@ -8,7 +8,7 @@ import {
 import { Navbar } from "../Navbar/Navbar";
 
 import { PokemonDetails } from "../PokemonDetails/PokemonDetails";
-import { PokemonListScreen } from "../PokemonListScreen";
+import { PokemonListScreen } from "../PokemonListScreen/PokemonListScreen";
 
 export const Layout = () => {
   return (

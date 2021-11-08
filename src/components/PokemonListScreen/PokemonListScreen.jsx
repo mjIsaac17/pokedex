@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useContext, useCallback } from "react";
-import { Card } from "./Card/Card";
+import { Card } from "../Card/Card";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { PokemonContext } from "./PokemonContext";
 import { useHistory } from "react-router";
 import toastr from "toastr";
-import "../../node_modules/toastr/build/toastr.css";
-import { InputText } from "./InputText/InputText";
+import "../../../node_modules/toastr/build/toastr.css";
+import { InputText } from "../InputText/InputText";
+import "./pokemonListScreen.css";
 
 toastr.options = {
   closeButton: true,
@@ -135,7 +136,7 @@ export const PokemonListScreen = () => {
   else {
     return (
       <div className="container">
-        <div className="search-area">
+        <div className="filter-area">
           <select
             name="ddlGeneration"
             id="ddlGeneration"
@@ -149,15 +150,18 @@ export const PokemonListScreen = () => {
               </option>
             ))}
           </select>
-          <InputText
-            id="filter"
-            name="filter"
-            placeholder="Search..."
-            onChangeFunction={handleFilter}
-          />
-          <button type="button" onClick={handleSearch}>
-            Search
-          </button>
+
+          <div className="filter-area__search">
+            <InputText
+              id="filter"
+              name="filter"
+              placeholder="Search..."
+              onChangeFunction={handleFilter}
+            />
+            <button type="button" onClick={handleSearch}>
+              Search
+            </button>
+          </div>
         </div>
         <p>Total: {totalPokemon}</p>
         {pokemon && (

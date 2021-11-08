@@ -1,0 +1,35 @@
+.filter-area {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1rem;
+  width: 100%;
+}
+.filter-area select {
+  font-size: 1.3rem;
+  max-width: 25%;
+}
+.filter-area__search {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.filter-area__search button {
+  padding: 0.4rem;
+}
+
+.filter-area__search input {
+  width: 60%;
+}
+
+@media screen and (max-width: 450px) {
+  .filter-area {
+    flex-direction: column;
+  }
+  .filter-area select {
+    max-width: 100%;
+  }
+}

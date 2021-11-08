@@ -142,20 +142,3 @@ b {
     justify-content: center;
   }
 }
-
-.search-area {
-  display: flex;
-  flex-direction: row;
-  /* background-color: blueviolet; */
-  align-items: center;
-  justify-content: flex-end;
-}
-
-.search-area button {
-  margin-left: 1rem;
-  padding: 0.4rem;
-}
-
-.search-area input {
-  width: 30%;
-}
