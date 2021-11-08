@@ -17,7 +17,7 @@ export const PokemonDetails = () => {
           <div className="img-area">
             <h1 className="img-area__title">{pokemon.name}</h1>
             <img
-              src={pokemon.sprites.other.dream_world.front_default}
+              src={pokemon.sprites.other["official-artwork"].front_default}
               alt={pokemon.name}
             />
           </div>

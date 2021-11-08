@@ -1,0 +1,11 @@
+.input-text {
+  background-color: rgb(247, 247, 247);
+  border-radius: 15px;
+  border: 1px solid rgb(153, 153, 153);
+  font-family: "Franklin Gothic Medium";
+  font-size: 1.25rem;
+  margin: 0.5rem 0;
+  outline-width: 0;
+  padding: 0.2rem 1rem;
+  width: 100%;
+}

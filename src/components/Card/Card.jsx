@@ -16,7 +16,7 @@ export const Card = ({ pokemon }) => {
       </div>
       <div className="card__body">
         <img
-          src={pokemon.sprites.other.dream_world.front_default}
+          src={pokemon.sprites.other["official-artwork"].front_default}
           alt={pokemon.name}
         />
       </div>
