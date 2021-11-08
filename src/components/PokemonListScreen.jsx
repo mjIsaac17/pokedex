@@ -1,38 +1,44 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext, useCallback } from "react";
 import { Card } from "./Card/Card";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { PokemonContext } from "./PokemonContext";
 
 export const PokemonListScreen = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [pokemon, setPokemon] = useState(null);
-
+  const { pokemon, setPokemon } = useContext(PokemonContext);
   const totalPokemon = pokemon ? pokemon.length : 0;
-  //   const totalPokemon = useMemo(() => (pokemon ? pokemon.length : 0), [pokemon]);
-  const getPokemon = async (url) => {
-    const response = await fetch(url);
-    if (response.ok) {
-      const data = await response.json();
+  const [isLoading, setIsLoading] = useState(totalPokemon === 0 ? true : false);
 
-      Promise.all(
-        data.results.map((pokemonData) =>
-          fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonData.name}`)
-        )
-      )
-        .then((responses) =>
-          Promise.all(responses.map((res) => res.json())).then((newPokemon) =>
-            setPokemon((currentPokemon) =>
-              currentPokemon ? [...currentPokemon, ...newPokemon] : newPokemon
-            )
+  const getPokemon = useCallback(
+    async (url) => {
+      const response = await fetch(url);
+      if (response.ok) {
+        const data = await response.json();
+
+        Promise.all(
+          data.results.map((pokemonData) =>
+            fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonData.name}`)
           )
         )
-        .finally(() => setIsLoading(false));
-      console.log(data);
-    } else console.log(response);
-  };
+          .then((responses) =>
+            Promise.all(responses.map((res) => res.json())).then((newPokemon) =>
+              setPokemon((currentPokemon) =>
+                currentPokemon ? [...currentPokemon, ...newPokemon] : newPokemon
+              )
+            )
+          )
+          .finally(() => setIsLoading(false));
+        console.log(data);
+      } else console.log(response);
+    },
+    [setPokemon]
+  );
 
   useEffect(() => {
-    getPokemon("https://pokeapi.co/api/v2/pokemon?offset=0&limit=30");
-  }, []);
+    if (totalPokemon === 0) {
+      console.log("effect getPokemon");
+      getPokemon("https://pokeapi.co/api/v2/pokemon?offset=0&limit=30");
+    }
+  }, [getPokemon, totalPokemon]);
 
   if (isLoading) return <h2>Loading...</h2>;
   else {
