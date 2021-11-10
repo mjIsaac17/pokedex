@@ -1,11 +1,18 @@
 import React, { useEffect, useState, useContext, useCallback } from "react";
-import { Card } from "../Card/Card";
-import InfiniteScroll from "react-infinite-scroll-component";
-import { PokemonContext } from "./PokemonContext";
 import { useHistory } from "react-router";
+import InfiniteScroll from "react-infinite-scroll-component";
+
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+
 import toastr from "toastr";
 import "../../../node_modules/toastr/build/toastr.css";
+
+import { Card } from "../Card/Card";
+import { SkeletonCard } from "../Card/SkeletonCard";
 import { InputText } from "../InputText/InputText";
+
+import { PokemonContext } from "./PokemonContext";
 import "./pokemonListScreen.css";
 
 toastr.options = {
@@ -14,66 +21,97 @@ toastr.options = {
 };
 
 export const PokemonListScreen = () => {
-  const { pokemonContext, setPokemonContext } = useContext(PokemonContext);
-  const { pokemon, generations, currentGeneration = "-1" } = pokemonContext;
-  const totalPokemon = pokemon ? pokemon.length : 0;
-  const [isLoading, setIsLoading] = useState(totalPokemon === 0 ? true : false);
-  const [filterPokemon, setFilterPokemon] = useState("");
-  // const [generations, setGenerations] = useState([]);
-  const [hasMore, setHasMore] = useState(true);
   const history = useHistory();
 
-  const getPokemon = useCallback(
-    async (url, byGeneration = false) => {
-      let dataFieldName = "results",
-        replaceCurrent = false;
+  // context constants
+  const { pokemonContext, setPokemonContext } = useContext(PokemonContext);
+  const { pokemon, generations, currentGeneration, totalAllPokemon } =
+    pokemonContext;
 
-      if (byGeneration) {
-        dataFieldName = "pokemon_species";
-        replaceCurrent = true;
-      }
+  // useStates
+  const [filterPokemon, setFilterPokemon] = useState("");
+  const [currentTotalPokemon, setCurrentTotalPokemon] = useState(
+    pokemon.length
+  );
+  const [isLoading, setIsLoading] = useState(
+    currentTotalPokemon === 0 ? true : false
+  );
+  const [hasMore, setHasMore] = useState(
+    currentGeneration === -1 ? true : false //currentGeneration
+  );
 
-      const response = await fetch(url);
+  // get functions
+  const getPokemonByGeneration = useCallback(
+    async (generation) => {
+      console.log("getPokemonByGeneration");
+      const response = await fetch(
+        `https://pokeapi.co/api/v2/generation/${generation}`
+      );
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
+        setCurrentTotalPokemon(data.pokemon_species.length);
         Promise.all(
-          data[dataFieldName].map((pokemonData, index) => {
-            if (!byGeneration)
-              return fetch(
-                `https://pokeapi.co/api/v2/pokemon/${pokemonData.name}`
-              );
-            else {
-              //Get pokemon id from url because the name is not working for all pokemon.
-              //E.j. Generation 3 returns the pokemon "deoxys" as name, but to get the pokemon data is necessary
-              // to request it by "deoxys-normal"
-              const id = pokemonData.url.split("/")[6]; //position 6 contains the id
-              return fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
-            }
+          data.pokemon_species.map((pokemonData) => {
+            //Get pokemon id from url because the name is not working for all pokemon.
+            //E.j. Generation 3 returns the pokemon "deoxys" as name, but to get the pokemon data is necessary
+            // to request it by "deoxys-normal"
+            const id = pokemonData.url.split("/")[6]; //position 6 contains the id
+            return fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
           })
         )
           .then((responses) =>
             Promise.all(responses.map((res) => res.json())).then(
               (newPokemon) => {
-                if (!replaceCurrent) {
-                  setPokemonContext((currentPokemonContext) => ({
-                    ...currentPokemonContext,
-                    pokemon: currentPokemonContext.pokemon
-                      ? [...currentPokemonContext.pokemon, ...newPokemon]
-                      : newPokemon,
-                  }));
-                } else {
-                  const sortedPokemon = newPokemon.sort((a, b) => a.id - b.id);
-                  setPokemonContext((currentPokemonContext) => ({
-                    ...currentPokemonContext,
-                    pokemon: sortedPokemon,
-                  }));
-                }
+                const sortedPokemon = newPokemon.sort((a, b) => a.id - b.id);
+                setPokemonContext((currentPokemonContext) => ({
+                  ...currentPokemonContext,
+                  pokemon: sortedPokemon,
+                }));
               }
             )
           )
           .finally(() => setIsLoading(false));
-        console.log(data);
+      } else console.log(response);
+    },
+    [setPokemonContext]
+  );
+
+  const getAllPokemon = useCallback(
+    async (url, clearPokemonList = false, totalAllPokemon = 0) => {
+      console.log("getAllPokemon", url);
+      const response = await fetch(url);
+      if (response.ok) {
+        const data = await response.json();
+
+        if (totalAllPokemon === 0)
+          setPokemonContext((currentPokemonContext) => ({
+            ...currentPokemonContext,
+            totalAllPokemon: data.count,
+          }));
+
+        Promise.all(
+          data.results.map((pokemonData) =>
+            fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonData.name}`)
+          )
+        )
+          .then((responses) =>
+            Promise.all(responses.map((res) => res.json())).then(
+              (newPokemon) => {
+                setCurrentTotalPokemon((total) =>
+                  clearPokemonList
+                    ? newPokemon.length
+                    : newPokemon.length + total
+                );
+                setPokemonContext((currentPokemonContext) => ({
+                  ...currentPokemonContext,
+                  pokemon: clearPokemonList
+                    ? newPokemon
+                    : [...currentPokemonContext.pokemon, ...newPokemon],
+                }));
+              }
+            )
+          )
+          .finally(() => setIsLoading(false));
       } else console.log(response);
     },
     [setPokemonContext]
@@ -89,14 +127,15 @@ export const PokemonListScreen = () => {
           generations: generationsData,
         }))
       );
-  }, []);
+  }, [setPokemonContext]);
 
+  // handler functions
   const handleFilter = (e) => {
     const filter = e.target.value.replace(/\\/g, "\\\\");
     setFilterPokemon(filter);
   };
 
-  const handleSearch = async () => {
+  const handleSearchPokemon = async () => {
     const data = await fetch(
       `https://pokeapi.co/api/v2/pokemon/${filterPokemon.toLocaleLowerCase()}`
     );
@@ -109,68 +148,85 @@ export const PokemonListScreen = () => {
 
   const handleSelectGeneration = (e) => {
     const generation = parseInt(e.target.value);
-    setHasMore(false);
+    setIsLoading(true);
     setPokemonContext((currentPokemonContext) => ({
       ...currentPokemonContext,
       currentGeneration: generation,
     }));
     if (generation !== -1) {
-      getPokemon(
-        `https://pokeapi.co/api/v2/generation/${generation + 1}`,
-        true
-      );
+      setHasMore(false);
+      getPokemonByGeneration(generation + 1);
     } else {
+      getAllPokemon(
+        "https://pokeapi.co/api/v2/pokemon?offset=0&limit=30",
+        true,
+        totalAllPokemon
+      );
       setHasMore(true);
     }
   };
-  console.log(generations);
+
+  // effects
   useEffect(() => {
-    if (totalPokemon === 0) {
+    if (totalAllPokemon === 0) {
       console.log("effect getPokemon");
       getGenerations();
-      getPokemon("https://pokeapi.co/api/v2/pokemon?offset=0&limit=30");
+      getAllPokemon(
+        "https://pokeapi.co/api/v2/pokemon?offset=0&limit=30",
+        true
+      );
     }
-  }, [getPokemon, getGenerations]);
+  }, [getAllPokemon, getGenerations, totalAllPokemon]);
 
-  if (isLoading) return <h2>Loading...</h2>;
-  else {
-    return (
-      <div className="container">
-        <div className="filter-area">
-          <select
-            name="ddlGeneration"
-            id="ddlGeneration"
-            defaultValue={currentGeneration}
-            onChange={handleSelectGeneration}
-          >
-            <option value="-1">All</option>
-            {generations.results.map(({ name }, index) => (
+  // skeleton when the data is loading
+  let skeletonCards = [];
+  for (let index = 0; index < 12; index++) {
+    skeletonCards.push(<SkeletonCard key={index} />);
+  }
+  return (
+    <div className="container">
+      <div className="filter-area">
+        <select
+          name="ddlGeneration"
+          id="ddlGeneration"
+          defaultValue={currentGeneration}
+          onChange={handleSelectGeneration}
+        >
+          <option value="-1">All</option>
+          {generations.results &&
+            generations.results.map(({ name }, index) => (
               <option key={name} value={index}>
                 {name}
               </option>
             ))}
-          </select>
+        </select>
 
-          <div className="filter-area__search">
-            <InputText
-              id="filter"
-              name="filter"
-              placeholder="Search..."
-              onChangeFunction={handleFilter}
-            />
-            <button type="button" onClick={handleSearch}>
-              Search
-            </button>
-          </div>
+        <div className="filter-area__search">
+          <InputText
+            id="filter"
+            name="filter"
+            placeholder="Search..."
+            onChangeFunction={handleFilter}
+          />
+          <button type="button" onClick={handleSearchPokemon}>
+            Search
+          </button>
         </div>
-        <p>Total: {totalPokemon}</p>
-        {pokemon && (
+      </div>
+      {!isLoading ? (
+        <>
+          <p>
+            Total:{" "}
+            {currentGeneration !== -1 ? currentTotalPokemon : totalAllPokemon}
+          </p>
           <InfiniteScroll
             className="flex-container"
-            dataLength={totalPokemon}
+            dataLength={pokemon.length}
             next={() =>
-              getPokemon(
-                `https://pokeapi.co/api/v2/pokemon?offset=${totalPokemon}&limit=30`
+              getAllPokemon(
+                `https://pokeapi.co/api/v2/pokemon?offset=${currentTotalPokemon}&limit=30`,
+                false,
+                totalAllPokemon
               )
             }
             hasMore={hasMore}
@@ -182,8 +238,15 @@ export const PokemonListScreen = () => {
                 )
             )}
           </InfiniteScroll>
-        )}
-      </div>
-    );
-  }
+        </>
+      ) : (
+        <>
+          <p>
+            Total: <Skeleton width={50} />
+          </p>
+          <div className="flex-container">{skeletonCards}</div>
+        </>
+      )}
+    </div>
+  );
 };
