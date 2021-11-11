@@ -25,13 +25,13 @@ export const PokemonListScreen = () => {
 
   // context constants
   const { pokemonContext, setPokemonContext } = useContext(PokemonContext);
-  const { pokemon, generations, currentGeneration, totalAllPokemon } =
+  const { pokemonList, generations, currentGeneration, totalAllPokemon } =
     pokemonContext;
 
   // useStates
   const [filterPokemon, setFilterPokemon] = useState("");
   const [currentTotalPokemon, setCurrentTotalPokemon] = useState(
-    pokemon.length
+    pokemonList.length
   );
   const [isLoading, setIsLoading] = useState(
     currentTotalPokemon === 0 ? true : false
@@ -40,7 +40,7 @@ export const PokemonListScreen = () => {
     currentGeneration === -1 ? true : false //currentGeneration
   );
 
-  // get functions
+  // functions to get data from PokeAPI
   const getPokemonByGeneration = useCallback(
     async (generation) => {
       console.log("getPokemonByGeneration");
@@ -65,7 +65,7 @@ export const PokemonListScreen = () => {
                 const sortedPokemon = newPokemon.sort((a, b) => a.id - b.id);
                 setPokemonContext((currentPokemonContext) => ({
                   ...currentPokemonContext,
-                  pokemon: sortedPokemon,
+                  pokemonList: sortedPokemon,
                 }));
               }
             )
@@ -104,9 +104,9 @@ export const PokemonListScreen = () => {
                 );
                 setPokemonContext((currentPokemonContext) => ({
                   ...currentPokemonContext,
-                  pokemon: clearPokemonList
+                  pokemonList: clearPokemonList
                     ? newPokemon
-                    : [...currentPokemonContext.pokemon, ...newPokemon],
+                    : [...currentPokemonContext.pokemonList, ...newPokemon],
                 }));
               }
             )
@@ -142,7 +142,7 @@ export const PokemonListScreen = () => {
     if (data.ok) {
       const pokemon = await data.json();
       console.log(pokemon);
-      history.push(`details/${pokemon.name}`, { pokemon: pokemon });
+      history.push(`details/${pokemon.name}`, { selectedPokemon: pokemon });
     } else toastr.error("Pokemon not found");
   };
 
@@ -221,7 +221,7 @@ export const PokemonListScreen = () => {
           </p>
           <InfiniteScroll
             className="flex-container"
-            dataLength={pokemon.length}
+            dataLength={pokemonList.length}
             next={() =>
               getAllPokemon(
                 `https://pokeapi.co/api/v2/pokemon?offset=${currentTotalPokemon}&limit=30`,
@@ -231,7 +231,7 @@ export const PokemonListScreen = () => {
             }
             hasMore={hasMore}
           >
-            {pokemon.map(
+            {pokemonList.map(
               (p) =>
                 p.name.search(new RegExp(filterPokemon, "i")) !== -1 && (
                   <Card key={p.id} pokemon={p} />

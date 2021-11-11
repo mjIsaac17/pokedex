@@ -6,7 +6,7 @@ import "./card.css";
 export const Card = ({ pokemon }) => {
   const history = useHistory();
   const handleClick = () => {
-    history.push(`details/${pokemon.name}`, { pokemon: pokemon });
+    history.push(`details/${pokemon.name}`, { selectedPokemon: pokemon });
   };
   return (
     <div className="card card--light" onClick={handleClick}>

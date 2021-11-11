@@ -3,7 +3,7 @@ import { Layout } from "./components/Layout/Layout";
 import { PokemonContext } from "./components/PokemonListScreen/PokemonContext";
 export const PokedexApp = () => {
   const [pokemonContext, setPokemonContext] = useState({
-    pokemon: [],
+    pokemonList: [],
     generations: [],
     currentGeneration: -1,
     totalAllPokemon: 0,

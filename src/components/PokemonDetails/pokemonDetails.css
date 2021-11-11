@@ -9,6 +9,38 @@ b {
   font-size: 1.25rem;
 }
 
+.details-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.previous {
+  position: absolute;
+  top: 10%;
+  bottom: 10%;
+  left: 0%;
+}
+
+.previous .grid-container {
+  overflow: hidden;
+}
+
+.current {
+  height: 100%;
+}
+
+.next {
+  position: absolute;
+  top: 10%;
+  bottom: 10%;
+  right: 0%;
+}
+
+.next .grid-container {
+  overflow: hidden;
+}
+
 .details__box {
   display: flex;
   align-items: center;
@@ -28,6 +60,7 @@ b {
   max-height: 700px;
   margin: auto;
   padding: 2rem;
+  position: relative;
   width: 90%;
 }
 
@@ -45,9 +78,7 @@ b {
 }
 
 .grid-container {
-  overflow: auto;
   display: grid;
-  width: 100%;
   height: 100%;
   gap: 1rem;
   grid-template-columns: 1.25fr 1fr;
@@ -62,6 +93,8 @@ b {
     "img body"
     "img stats"
     "types abilities";
+  overflow: auto;
+  width: 100%;
 }
 
 .img-area {
@@ -73,9 +106,9 @@ b {
 }
 
 .img-area img {
-  object-fit: contain;
-  max-width: 95%;
   height: 85%;
+  max-width: 95%;
+  object-fit: contain;
 }
 
 .stats {
@@ -91,7 +124,6 @@ b {
   display: flex;
   flex-direction: row;
   grid-area: types;
-  /* background-color: grey; */
 }
 .types p {
   font-size: 1rem;
@@ -103,21 +135,36 @@ b {
 .body {
   grid-area: body;
   display: flex;
-  /* background-color: blue; */
-  /* align-items: center; */
 }
 
 .base-xp {
-  grid-area: base-xp;
-  display: flex;
   align-items: center;
-  /* background-color: brown; */
+  display: flex;
+  grid-area: base-xp;
 }
 
 .abilities {
   grid-area: abilities;
-  /* display: grid; */
-  /* background-color: rgb(182, 72, 72); */
+}
+
+.btn-navigation {
+  position: absolute;
+  font-size: 3rem;
+  top: 50%;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.btn-navigation:hover {
+  color: gray;
+}
+
+.btn-navigation--previous {
+  left: 1%;
+}
+.btn-navigation--next {
+  right: 1%;
 }
 
 @media screen and (max-width: 600px) {
@@ -133,12 +180,21 @@ b {
       "base-xp";
   }
   .paper {
-    max-height: 90%;
     text-align: center;
   }
   .types,
   .body,
   .base-xp {
     justify-content: center;
+  }
+
+  .btn-navigation {
+    position: fixed;
+  }
+  .btn-navigation--next {
+    right: 5%;
+  }
+  .btn-navigation--previous {
+    left: 5%;
   }
 }

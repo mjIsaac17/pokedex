@@ -10,7 +10,7 @@ nav {
   min-height: 3.5rem;
   justify-content: center;
   width: 100%;
-  z-index: 10;
+  z-index: 100;
 }
 
 .sticky {
