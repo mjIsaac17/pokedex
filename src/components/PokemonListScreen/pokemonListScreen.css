@@ -25,6 +25,13 @@
   width: 60%;
 }
 
+.export-data-area {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
 @media screen and (max-width: 450px) {
   .filter-area {
     flex-direction: column;

@@ -27,24 +27,27 @@ export const PokemonDetailsScreen = () => {
 
   // handler functions
   const handleSetNextPokemon = () => {
-    let newPokemonIndex = currentIndex + 2;
-    let newCurrentIndex = currentIndex + 1;
+    setAnimate(true);
+    setTimeout(() => {
+      let newPokemonIndex = currentIndex + 2;
+      let newCurrentIndex = currentIndex + 1;
 
-    if (!pokemonList[newPokemonIndex]) {
-      if (currentIndex === lastPokemonIndex) {
-        newPokemonIndex = 1;
-        newCurrentIndex = 0;
-      } else {
-        newPokemonIndex = 0;
-        newCurrentIndex = lastPokemonIndex;
+      if (!pokemonList[newPokemonIndex]) {
+        if (currentIndex === lastPokemonIndex) {
+          newPokemonIndex = 1;
+          newCurrentIndex = 0;
+        } else {
+          newPokemonIndex = 0;
+          newCurrentIndex = lastPokemonIndex;
+        }
       }
-    }
-    setCurrentIndex(newCurrentIndex);
-    setPokemonNavigation({
-      previousPokemon: pokemonNavigation.currentPokemon,
-      currentPokemon: pokemonNavigation.nextPokemon,
-      nextPokemon: pokemonList[newPokemonIndex],
-    });
+      setCurrentIndex(newCurrentIndex);
+      setPokemonNavigation({
+        previousPokemon: pokemonNavigation.currentPokemon,
+        currentPokemon: pokemonNavigation.nextPokemon,
+        nextPokemon: pokemonList[newPokemonIndex],
+      });
+    }, 150);
   };
 
   const handleSetPreviousPokemon = () => {
@@ -68,6 +71,8 @@ export const PokemonDetailsScreen = () => {
     });
   };
 
+  const [animate, setAnimate] = useState(false);
+
   //Change url with current pokemon
   window.history.replaceState(
     null,
@@ -76,7 +81,10 @@ export const PokemonDetailsScreen = () => {
   );
 
   return (
-    <div className="details-container">
+    <div
+      className={`details-container ${animate && "move--left"}`}
+      onAnimationEnd={() => setAnimate(false)}
+    >
       <div className="previous">
         <PokemonDetailsNavigation pokemon={pokemonNavigation.previousPokemon} />
       </div>

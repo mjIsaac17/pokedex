@@ -14,6 +14,7 @@ import { InputText } from "../InputText/InputText";
 
 import { PokemonContext } from "./PokemonContext";
 import "./pokemonListScreen.css";
+import { PdfButton } from "../PdfButton/PdfButton";
 
 toastr.options = {
   closeButton: true,
@@ -208,17 +209,28 @@ export const PokemonListScreen = () => {
             placeholder="Search..."
             onChangeFunction={handleFilter}
           />
-          <button type="button" onClick={handleSearchPokemon}>
+          <button
+            type="button"
+            className="btn btn--search"
+            onClick={handleSearchPokemon}
+          >
             Search
           </button>
         </div>
       </div>
       {!isLoading ? (
         <>
-          <p>
-            Total:{" "}
-            {currentGeneration !== -1 ? currentTotalPokemon : totalAllPokemon}
-          </p>
+          <div className="export-data-area">
+            <p>
+              Total:{" "}
+              {currentGeneration !== -1 ? currentTotalPokemon : totalAllPokemon}
+            </p>
+            <PdfButton
+              pokemonList={pokemonList}
+              fileName="Pokemon"
+              totalPokemon={totalAllPokemon}
+            />
+          </div>
           <InfiniteScroll
             className="flex-container"
             dataLength={pokemonList.length}

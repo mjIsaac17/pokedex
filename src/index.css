@@ -20,3 +20,24 @@
   flex-wrap: wrap;
   justify-content: center;
 }
+
+.btn {
+  cursor: pointer;
+  font-size: 0.9rem;
+  border-radius: 5px;
+  border: black 1px solid;
+}
+
+.btn--search:hover {
+  background-color: rgb(212, 209, 209);
+}
+
+.btn--pdf {
+  background-color: red;
+  color: white;
+  padding: 0.4rem;
+}
+
+.btn--pdf:hover {
+  background-color: rgb(255, 78, 78);
+}

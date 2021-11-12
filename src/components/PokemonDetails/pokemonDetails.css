@@ -48,7 +48,6 @@ b {
   width: 100%;
   height: 100%;
 }
-
 .paper {
   background: rgb(245, 244, 244);
   border-radius: 15px;
@@ -62,6 +61,7 @@ b {
   padding: 2rem;
   position: relative;
   width: 90%;
+  overflow: hidden;
 }
 
 .close {
@@ -75,6 +75,25 @@ b {
 .close:hover,
 .close:focus {
   color: rgb(134, 134, 134);
+}
+
+.move--left .grid-container {
+  animation: changePokemon 0.75s;
+}
+
+@keyframes changePokemon {
+  25% {
+    transform: translateX(-110%);
+  }
+  50% {
+    transform: scale(0) translateX(100%);
+  }
+  51% {
+    transform: scale(1) translateX(100%);
+  }
+  100% {
+    transform: scale(1) translateX(0%);
+  }
 }
 
 .grid-container {
@@ -163,6 +182,7 @@ b {
 .btn-navigation--previous {
   left: 1%;
 }
+
 .btn-navigation--next {
   right: 1%;
 }
