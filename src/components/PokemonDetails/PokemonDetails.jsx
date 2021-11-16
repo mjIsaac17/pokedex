@@ -4,14 +4,24 @@ import { useHistory, useParams } from "react-router";
 import { fetchAll } from "../../helpers/fetch";
 import { Chip } from "../Chip/Chip";
 import "./pokemonDetails.css";
+import { LoadingScreen } from "../LoadingScreen/LoadingScreen";
 
 export const PokemonDetails = () => {
+  // Required pre-loaded data
   const history = useHistory();
   const urlPokemonName = useParams().pokemon;
+
+  // states
   const [loading, setLoading] = useState(true);
   const [currentPokemon, setCurrentPokemon] = useState(null);
   const [abilitiesDetails, setAbilitiesDetails] = useState(null);
-  console.log(currentPokemon);
+
+  // functions
+  const loadAbilities = async (pokemonData) => {
+    const abilities = pokemonData.abilities.map((a) => a.ability.name);
+    const resp = await fetchAll("ability", abilities);
+    setAbilitiesDetails(resp);
+  };
 
   const loadPokemon = useCallback(async () => {
     const data = await fetch(
@@ -22,21 +32,15 @@ export const PokemonDetails = () => {
       setCurrentPokemon(pokemonData);
       await loadAbilities(pokemonData);
       setLoading(false);
-      //console.log(pokemon);sethistory.push(`details/${pokemon.name}`, { selectedPokemon: pokemon });
     }
   }, [urlPokemonName]);
+
+  // effects
   useEffect(() => {
     if (!currentPokemon) loadPokemon();
   }, [loadPokemon, currentPokemon]);
 
-  const loadAbilities = async (pokemonData) => {
-    const abilities = pokemonData.abilities.map((a) => a.ability.name);
-    const resp = await fetchAll("ability", abilities);
-    setAbilitiesDetails(resp);
-  };
-
-  console.log(abilitiesDetails);
-  if (loading) return <h1>Loading...</h1>;
+  if (loading) return <LoadingScreen />;
   else
     return (
       <div className="details__box">

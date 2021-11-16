@@ -15,6 +15,7 @@ import { InputText } from "../InputText/InputText";
 import { PokemonContext } from "./PokemonContext";
 import "./pokemonListScreen.css";
 import { PdfButton } from "../PdfButton/PdfButton";
+import { fetchAll } from "../../helpers/fetch";
 
 toastr.options = {
   closeButton: true,
@@ -45,11 +46,11 @@ export const PokemonListScreen = () => {
   const getPokemonByGeneration = useCallback(
     async (generation) => {
       console.log("getPokemonByGeneration");
-      const response = await fetch(
+      const generationsData = await fetch(
         `https://pokeapi.co/api/v2/generation/${generation}`
       );
-      if (response.ok) {
-        const data = await response.json();
+      if (generationsData.ok) {
+        const data = await generationsData.json();
         setCurrentTotalPokemon(data.pokemon_species.length);
         Promise.all(
           data.pokemon_species.map((pokemonData) => {
@@ -72,7 +73,7 @@ export const PokemonListScreen = () => {
             )
           )
           .finally(() => setIsLoading(false));
-      } else console.log(response);
+      } else console.log(generationsData);
     },
     [setPokemonContext]
   );
@@ -80,40 +81,31 @@ export const PokemonListScreen = () => {
   const getAllPokemon = useCallback(
     async (url, clearPokemonList = false, totalAllPokemon = 0) => {
       console.log("getAllPokemon", url);
-      const response = await fetch(url);
-      if (response.ok) {
-        const data = await response.json();
+      const pokemonResponse = await fetch(url);
+      if (pokemonResponse.ok) {
+        const pokemonData = await pokemonResponse.json();
 
         if (totalAllPokemon === 0)
           setPokemonContext((currentPokemonContext) => ({
             ...currentPokemonContext,
-            totalAllPokemon: data.count,
+            totalAllPokemon: pokemonData.count,
           }));
+        const pokemonNames = pokemonData.results.map((pokemon) => pokemon.name);
 
-        Promise.all(
-          data.results.map((pokemonData) =>
-            fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonData.name}`)
-          )
-        )
-          .then((responses) =>
-            Promise.all(responses.map((res) => res.json())).then(
-              (newPokemon) => {
-                setCurrentTotalPokemon((total) =>
-                  clearPokemonList
-                    ? newPokemon.length
-                    : newPokemon.length + total
-                );
-                setPokemonContext((currentPokemonContext) => ({
-                  ...currentPokemonContext,
-                  pokemonList: clearPokemonList
-                    ? newPokemon
-                    : [...currentPokemonContext.pokemonList, ...newPokemon],
-                }));
-              }
-            )
-          )
+        fetchAll("pokemon", pokemonNames)
+          .then((newPokemon) => {
+            setCurrentTotalPokemon((total) =>
+              clearPokemonList ? newPokemon.length : newPokemon.length + total
+            );
+            setPokemonContext((currentPokemonContext) => ({
+              ...currentPokemonContext,
+              pokemonList: clearPokemonList
+                ? newPokemon
+                : [...currentPokemonContext.pokemonList, ...newPokemon],
+            }));
+          })
           .finally(() => setIsLoading(false));
-      } else console.log(response);
+      } else console.log(pokemonResponse);
     },
     [setPokemonContext]
   );

@@ -4,6 +4,7 @@ import { useHistory } from "react-router";
 import { fetchAll } from "../../helpers/fetch";
 import { Chip } from "../Chip/Chip";
 import "./pokemonDetails.css";
+import { LoadingScreen } from "../LoadingScreen/LoadingScreen";
 
 export const PokemonDetailsNavigation = ({
   pokemon,
@@ -12,14 +13,18 @@ export const PokemonDetailsNavigation = ({
 }) => {
   console.log("render PokemonDetailsNavigation");
   const history = useHistory();
+
+  // states
   const [abilitiesDetails, setAbilitiesDetails] = useState(null);
 
+  // functions
   const loadAbilities = useCallback(async (pokemonData) => {
     const abilities = pokemonData.abilities.map((a) => a.ability.name);
     const resp = await fetchAll("ability", abilities);
     setAbilitiesDetails(resp);
   }, []);
 
+  // effects
   useEffect(() => {
     loadAbilities(pokemon);
   }, [loadAbilities, pokemon]);
@@ -106,5 +111,5 @@ export const PokemonDetailsNavigation = ({
         </div>
       </div>
     );
-  else return <h1>Loading...</h1>;
+  else return <LoadingScreen />;
 };

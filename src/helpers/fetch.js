@@ -20,8 +20,6 @@ export const fetchAll = (endpoint, data = {}) => {
 
   return Promise.all(data.map((item) => fetch(`${url}/${item}`))).then(
     (responses) =>
-      Promise.all(responses.map((res) => res.json())).then(
-        (newPokemon) => newPokemon
-      )
+      Promise.all(responses.map((res) => res.json())).then((results) => results)
   );
 };
