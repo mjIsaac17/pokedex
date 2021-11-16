@@ -187,6 +187,20 @@ b {
   right: 1%;
 }
 
+.tooltip {
+  font-size: 1rem !important;
+}
+
+.details__tooltip {
+  background-color: black;
+  border-radius: 25%;
+  cursor: pointer;
+  color: white;
+  font-size: 1rem;
+  margin-left: 0.5rem;
+  padding: 0.1rem 0.4rem;
+}
+
 @media screen and (max-width: 600px) {
   .grid-container {
     grid-template-columns: 1fr;

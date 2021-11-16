@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import ReactTooltip from "react-tooltip";
 import { jsPDF } from "jspdf";
 import { LoadingScreen } from "../LoadingScreen/LoadingScreen";
 
@@ -130,7 +131,9 @@ export const PdfButton = ({ pokemonList, fileName }) => {
   return (
     <>
       {loading && <LoadingScreen />}
+      <ReactTooltip className="tooltip" effect="solid" />
       <button
+        data-tip="Export to PDF"
         type="button"
         className="btn btn--pdf"
         onClick={handleExportToPDF}

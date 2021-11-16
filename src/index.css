@@ -25,7 +25,11 @@
   cursor: pointer;
   font-size: 0.9rem;
   border-radius: 5px;
-  border: black 1px solid;
+  border: none;
+}
+
+.btn--search {
+  border: rgb(202, 202, 202) 1px solid;
 }
 
 .btn--search:hover {

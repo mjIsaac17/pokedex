@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import ReactTooltip from "react-tooltip";
 import { useHistory } from "react-router";
+import { fetchAll } from "../../helpers/fetch";
 import { Chip } from "../Chip/Chip";
 import "./pokemonDetails.css";
 
@@ -10,10 +12,22 @@ export const PokemonDetailsNavigation = ({
 }) => {
   console.log("render PokemonDetailsNavigation");
   const history = useHistory();
+  const [abilitiesDetails, setAbilitiesDetails] = useState(null);
+
+  const loadAbilities = useCallback(async (pokemonData) => {
+    const abilities = pokemonData.abilities.map((a) => a.ability.name);
+    const resp = await fetchAll("ability", abilities);
+    setAbilitiesDetails(resp);
+  }, []);
+
+  useEffect(() => {
+    loadAbilities(pokemon);
+  }, [loadAbilities, pokemon]);
 
   if (pokemon)
     return (
       <div className="details__box">
+        <ReactTooltip className="tooltip" effect="solid" />
         <div className="paper">
           <span className="close" onClick={history.goBack}>
             &times;
@@ -71,9 +85,19 @@ export const PokemonDetailsNavigation = ({
             </div>
             <div className="abilities">
               <h2>Abilities:</h2>
-              {pokemon.abilities.map((a) => (
-                <p key={a.ability.name}>{a.ability.name}</p>
-              ))}
+
+              {abilitiesDetails
+                ? abilitiesDetails.map((a) => (
+                    <p key={a.name} data-tip={a.effect_entries[1].effect}>
+                      {a.name} <span className="details__tooltip">?</span>
+                    </p>
+                  ))
+                : pokemon.abilities.map((a) => (
+                    <p key={a.ability.name} data-tip="Loading...">
+                      {a.ability.name}{" "}
+                      <span className="details__tooltip">?</span>
+                    </p>
+                  ))}
             </div>
             <p className="base-xp">
               <b>Base experience:</b> {pokemon.base_experience}

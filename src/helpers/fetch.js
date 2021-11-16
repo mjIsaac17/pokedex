@@ -14,3 +14,14 @@ export const fetchNoToken = (endpoint = "", method = "GET", data = {}) => {
     });
   }
 };
+
+export const fetchAll = (endpoint, data = {}) => {
+  const url = `${baseUrl}/${endpoint}`;
+
+  return Promise.all(data.map((item) => fetch(`${url}/${item}`))).then(
+    (responses) =>
+      Promise.all(responses.map((res) => res.json())).then(
+        (newPokemon) => newPokemon
+      )
+  );
+};

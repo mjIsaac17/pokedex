@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
+import ReactTooltip from "react-tooltip";
 import { useHistory, useParams } from "react-router";
+import { fetchAll } from "../../helpers/fetch";
 import { Chip } from "../Chip/Chip";
 import "./pokemonDetails.css";
 
@@ -8,6 +10,8 @@ export const PokemonDetails = () => {
   const urlPokemonName = useParams().pokemon;
   const [loading, setLoading] = useState(true);
   const [currentPokemon, setCurrentPokemon] = useState(null);
+  const [abilitiesDetails, setAbilitiesDetails] = useState(null);
+  console.log(currentPokemon);
 
   const loadPokemon = useCallback(async () => {
     const data = await fetch(
@@ -16,6 +20,7 @@ export const PokemonDetails = () => {
     if (data.ok) {
       const pokemonData = await data.json();
       setCurrentPokemon(pokemonData);
+      await loadAbilities(pokemonData);
       setLoading(false);
       //console.log(pokemon);sethistory.push(`details/${pokemon.name}`, { selectedPokemon: pokemon });
     }
@@ -24,10 +29,18 @@ export const PokemonDetails = () => {
     if (!currentPokemon) loadPokemon();
   }, [loadPokemon, currentPokemon]);
 
+  const loadAbilities = async (pokemonData) => {
+    const abilities = pokemonData.abilities.map((a) => a.ability.name);
+    const resp = await fetchAll("ability", abilities);
+    setAbilitiesDetails(resp);
+  };
+
+  console.log(abilitiesDetails);
   if (loading) return <h1>Loading...</h1>;
   else
     return (
       <div className="details__box">
+        <ReactTooltip className="tooltip" effect="solid" />
         <div className="paper">
           <span className="close" onClick={history.goBack}>
             &times;
@@ -42,6 +55,7 @@ export const PokemonDetails = () => {
                   currentPokemon.sprites.other["official-artwork"].front_default
                 }
                 alt={currentPokemon.name}
+                onClick={loadAbilities}
               />
             </div>
             <div className="stats">
@@ -71,8 +85,10 @@ export const PokemonDetails = () => {
             </div>
             <div className="abilities">
               <h2>Abilities:</h2>
-              {currentPokemon.abilities.map((a) => (
-                <p key={a.ability.name}>{a.ability.name}</p>
+              {abilitiesDetails.map((a) => (
+                <p key={a.name} data-tip={a.effect_entries[1].effect}>
+                  {a.name} <span className="details__tooltip">?</span>
+                </p>
               ))}
             </div>
             <p className="base-xp">
