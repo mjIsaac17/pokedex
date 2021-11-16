@@ -23,27 +23,40 @@ export const PokemonDetails = () => {
     setAbilitiesDetails(resp);
   };
 
-  const loadPokemon = useCallback(async () => {
-    const data = await fetch(
-      `https://pokeapi.co/api/v2/pokemon/${urlPokemonName.toLocaleLowerCase()}`
-    );
-    if (data.ok) {
-      const pokemonData = await data.json();
-      setCurrentPokemon(pokemonData);
-      await loadAbilities(pokemonData);
-      setLoading(false);
-    }
-  }, [urlPokemonName]);
+  const loadPokemon = useCallback(
+    async (signal) => {
+      try {
+        const data = await fetch(
+          `https://pokeapi.co/api/v2/pokemon/${urlPokemonName.toLocaleLowerCase()}`,
+          { signal }
+        );
+        if (data.ok) {
+          const pokemonData = await data.json();
+          setCurrentPokemon(pokemonData);
+          await loadAbilities(pokemonData);
+          setLoading(false);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    [urlPokemonName]
+  );
 
   // effects
   useEffect(() => {
-    if (!currentPokemon) loadPokemon();
+    const controller = new AbortController();
+    const signal = controller.signal;
+    if (!currentPokemon) loadPokemon(signal);
+
+    return () => controller.abort();
   }, [loadPokemon, currentPokemon]);
 
+  console.log(currentPokemon);
   if (loading) return <LoadingScreen />;
   else
     return (
-      <div className="details__box">
+      <div className={`details__box ${currentPokemon.types[0].type.name}`}>
         <ReactTooltip className="tooltip" effect="solid" />
         <div className="paper">
           <span className="close" onClick={history.goBack}>

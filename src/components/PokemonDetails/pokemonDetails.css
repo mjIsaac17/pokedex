@@ -13,6 +13,7 @@ b {
   position: relative;
   width: 100%;
   height: 100%;
+  transition: background-color 0.7s ease;
 }
 
 .previous {
@@ -48,6 +49,79 @@ b {
   width: 100%;
   height: 100%;
 }
+
+.grass {
+  background-color: rgba(89, 173, 5, 0.8);
+}
+
+.fire {
+  background-color: rgba(238, 103, 40, 0.8);
+}
+
+.poison {
+  background: rgba(165, 40, 238, 0.8);
+}
+
+.flying {
+  background: rgba(86, 188, 246, 0.8);
+}
+
+.water {
+  background: rgba(0, 124, 195, 0.8);
+}
+
+.bug {
+  background: rgba(125, 223, 46, 0.8);
+}
+
+.normal {
+  background: rgba(219, 209, 165, 0.8);
+}
+
+.ground {
+  background: rgba(228, 193, 37, 0.8);
+}
+
+.rock {
+  background: rgba(146, 123, 18, 0.8);
+}
+
+.electric {
+  background: rgba(247, 251, 5, 0.8);
+}
+
+.fairy {
+  background: rgba(243, 196, 233, 0.8);
+}
+
+.psychic {
+  background: rgba(255, 122, 226, 0.8);
+}
+
+.fighting {
+  background: rgba(192, 0, 0, 0.8);
+}
+
+.steel {
+  background: rgba(190, 190, 190, 0.8);
+}
+
+.ice {
+  background: rgba(156, 240, 226, 0.8);
+}
+
+.dragon {
+  background: rgba(11, 61, 170, 0.8);
+}
+
+.dark {
+  background: rgba(17, 17, 17, 0.8);
+}
+
+.ghost {
+  background: rgba(73, 34, 146, 0.8);
+}
+
 .paper {
   background: rgb(245, 244, 244);
   border-radius: 15px;

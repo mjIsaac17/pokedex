@@ -32,8 +32,7 @@ export const PokemonDetailsNavigation = ({
   if (pokemon)
     return (
       <div className="details__box">
-        <ReactTooltip className="tooltip" effect="solid" />
-        <div className="paper">
+        <div className={`paper`}>
           <span className="close" onClick={history.goBack}>
             &times;
           </span>
@@ -90,19 +89,15 @@ export const PokemonDetailsNavigation = ({
             </div>
             <div className="abilities">
               <h2>Abilities:</h2>
-
-              {abilitiesDetails
-                ? abilitiesDetails.map((a) => (
-                    <p key={a.name} data-tip={a.effect_entries[1].effect}>
+              {abilitiesDetails &&
+                abilitiesDetails.map((a) => (
+                  <div key={`${pokemon.name}--${a.name}`}>
+                    <ReactTooltip className="tooltip" effect="solid" />
+                    <p data-tip={a.effect_entries[1].effect}>
                       {a.name} <span className="details__tooltip">?</span>
                     </p>
-                  ))
-                : pokemon.abilities.map((a) => (
-                    <p key={a.ability.name} data-tip="Loading...">
-                      {a.ability.name}{" "}
-                      <span className="details__tooltip">?</span>
-                    </p>
-                  ))}
+                  </div>
+                ))}
             </div>
             <p className="base-xp">
               <b>Base experience:</b> {pokemon.base_experience}

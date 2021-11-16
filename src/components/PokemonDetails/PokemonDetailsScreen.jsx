@@ -76,7 +76,9 @@ export const PokemonDetailsScreen = () => {
   );
 
   return (
-    <div className="details-container">
+    <div
+      className={`details-container ${pokemonNavigation.currentPokemon.types[0].type.name}`}
+    >
       <div className="previous">
         <PokemonDetailsNavigation pokemon={pokemonNavigation.previousPokemon} />
       </div>
