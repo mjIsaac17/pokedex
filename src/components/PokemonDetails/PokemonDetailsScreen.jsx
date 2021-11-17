@@ -69,11 +69,11 @@ export const PokemonDetailsScreen = () => {
   };
 
   //Change url with current pokemon
-  window.history.replaceState(
-    null,
-    null,
-    `http://localhost:3000/details/${pokemonNavigation.currentPokemon.name}`
-  );
+  const currentUrl = window.location.href;
+  const urlParts = currentUrl.split("/");
+  urlParts[-1] = pokemonNavigation.currentPokemon.name;
+  const newUrl = urlParts.join("/");
+  window.history.replaceState(null, null, newUrl);
 
   return (
     <div
