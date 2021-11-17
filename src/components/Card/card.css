@@ -83,9 +83,17 @@
   justify-content: space-around;
 }
 
-@media screen and (max-width: 620px) {
+@media screen and (max-width: 550px) {
   .card {
-    max-width: 120px;
+    max-width: 110px;
+  }
+  .card__header__id {
+    font-size: 0.7rem;
+  }
+
+  .card__header__name {
+    font-size: 1.1rem;
+    font-weight: bold;
   }
   .skeleton-card__body {
     height: 110px;
@@ -93,8 +101,20 @@
   }
 }
 
-@media screen and (max-width: 374px) {
+@media screen and (max-width: 316px) {
   .card {
-    max-width: 210px;
+    max-width: 220px;
+  }
+
+  .card__header__id {
+    font-size: 0.9rem;
+  }
+
+  .card__header__name {
+    font-size: 1.5rem;
+  }
+  .skeleton-card__body {
+    height: 200px;
+    width: 200px;
   }
 }
