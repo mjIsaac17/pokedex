@@ -12,7 +12,7 @@ export const SkeletonCard = () => {
         </p>
 
         <div className="card__body">
-          <Skeleton height={200} width={220} />
+          <Skeleton className="skeleton-card__body" />
         </div>
         <div className="skeleton-card__footer">
           <Skeleton height={30} width={50} />

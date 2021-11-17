@@ -38,5 +38,9 @@
   }
   .filter-area select {
     max-width: 100%;
+    font-size: 1rem;
+  }
+  .filter-area__search input {
+    font-size: 1rem;
   }
 }
