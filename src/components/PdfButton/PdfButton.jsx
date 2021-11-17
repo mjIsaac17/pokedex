@@ -42,7 +42,6 @@ export const PdfButton = ({ pokemonList, fileName }) => {
 
             const ratio = height / width;
 
-            console.log(ratio, height, width);
             if (height > maxHeight || width > maxWidth) {
               if (height > width) {
                 height = maxHeight;
@@ -122,7 +121,17 @@ export const PdfButton = ({ pokemonList, fileName }) => {
 
             pokemonInPage++;
           });
-          doc.save(`${fileName}.pdf`);
+          if (
+            /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+              navigator.userAgent
+            )
+          ) {
+            const blob = doc.output();
+            window.open(URL.createObjectURL(blob));
+          } else {
+            doc.save(`${fileName}.pdf`);
+          }
+
           setLoading(false);
         })
         .catch(() => setLoading(false));

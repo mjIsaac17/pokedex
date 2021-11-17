@@ -89,3 +89,17 @@
   background: rgb(73, 34, 146);
   color: white;
 }
+
+@media screen and (max-width: 550px) {
+  .chip {
+    font-size: 0.8rem;
+    padding: 0.3rem;
+  }
+}
+
+@media screen and (max-width: 316px) {
+  .chip {
+    font-size: 1rem;
+    padding: 0.5rem;
+  }
+}

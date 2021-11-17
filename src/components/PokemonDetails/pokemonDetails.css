@@ -17,7 +17,7 @@ b {
   font-size: 1.25rem;
 }
 
-@media screen and (max-width: 350px) {
+@media screen and (max-width: 350px), screen and (max-height: 530px) {
   h1 {
     font-size: 1.75rem;
   }
@@ -312,3 +312,36 @@ b {
     left: 5%;
   }
 }
+/* 
+
+@media screen and (max-width: 550px) and (max-height: 530px) {
+  .grid-container {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 0.5fr 1fr 0.5fr 1fr 0.5fr;
+    grid-template-areas:
+      "img"
+      "types"
+      "stats"
+      "body"
+      "abilities"
+      "base-xp";
+  }
+  .paper {
+    text-align: center;
+  }
+  .types,
+  .body,
+  .base-xp {
+    justify-content: center;
+  }
+
+  .btn-navigation {
+    position: fixed;
+  }
+  .btn-navigation--next {
+    right: 5%;
+  }
+  .btn-navigation--previous {
+    left: 5%;
+  }
+} */
