@@ -7,7 +7,6 @@ nav {
   background: red;
   display: flex;
   height: 8%;
-  min-height: 3.5rem;
   justify-content: center;
   width: 100%;
   z-index: 100;
@@ -25,4 +24,11 @@ nav {
   text-shadow: -5px 0 rgb(45, 97, 165), 0 5px rgb(45, 97, 165),
     5px 0 rgb(45, 97, 165), 0 -5px rgb(45, 97, 165);
   letter-spacing: 5px;
+  transition: font-size 0.5s ease;
+}
+
+@media screen and (max-height: 550px), screen and (max-width: 310px) {
+  .nav__title {
+    font-size: 1.5rem;
+  }
 }

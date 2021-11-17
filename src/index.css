@@ -4,6 +4,17 @@
   font-family: "Franklin Gothic Medium";
 }
 
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+.content {
+  height: 92%;
+  position: relative;
+  width: 100%;
+}
+
 #root {
   width: 100vw;
   height: 100vh;

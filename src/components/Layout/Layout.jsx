@@ -18,7 +18,7 @@ export const Layout = () => {
   return (
     <Router>
       <Navbar />
-      <div style={{ height: "92%" }}>
+      <div className="content">
         <Switch>
           {pokemonContext.pokemonList.length > 0 ? (
             <Route
