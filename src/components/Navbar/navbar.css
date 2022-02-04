@@ -2,29 +2,40 @@
   font-family: "Press Start 2P";
   src: url("../../fonts/PressStart2P-Regular.ttf") format("truetype");
 }
-nav {
+.nav {
   align-items: center;
   background: red;
   display: flex;
   height: 8%;
-  justify-content: center;
+  justify-content: flex-end;
   width: 100%;
   z-index: 100;
 }
 
-.sticky {
+.nav--sticky {
   position: sticky;
   top: 0;
 }
 
 .nav__title {
+  color: rgb(238, 216, 20);
   font-family: "Press Start 2P";
   font-size: 2.5rem;
-  color: rgb(238, 216, 20);
+  letter-spacing: 5px;
+  position: absolute;
+  text-align: center;
   text-shadow: -5px 0 rgb(45, 97, 165), 0 5px rgb(45, 97, 165),
     5px 0 rgb(45, 97, 165), 0 -5px rgb(45, 97, 165);
-  letter-spacing: 5px;
   transition: font-size 0.5s ease;
+  width: 100%;
+  z-index: -1;
+}
+
+.nav__item {
+  margin: 0 1rem;
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 @media screen and (max-height: 550px), screen and (max-width: 310px) {
